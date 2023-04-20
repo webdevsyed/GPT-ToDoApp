@@ -45,12 +45,18 @@ export const parseModOutput = (inputStr) => {
 
     // Extract the text and array strings
     let textStr = inputStr.slice(0, arrayStartIndex).trim();
-    let arrayStr = inputStr.slice(arrayStartIndex).trim();
+    let arrayStr = inputStr.slice(arrayStartIndex+15).trim();
 
     //Remove CLEARHISTORYNOW from arrayStr
     if (arrayStr.includes("CLEARHISTORYNOW")) {
-      arrayStr = arrayStr.slice(0,-32).slice(16);
+      arrayStr = arrayStr.slice(0,-16);
     }
+
+    if (arrayStr.charAt(arrayStr.length - 2)!== "]"){
+      const arrayEndIndex = inputStr.indexOf("]]");
+      arrayStr=arrayStr.slice(0,arrayEndIndex+3).trim()
+    }
+
     // Convert the array string to an actual array
     const array = JSON.parse(arrayStr);
 
@@ -58,16 +64,20 @@ export const parseModOutput = (inputStr) => {
     // console.log(array)
     return [textStr, array];
   } 
-  else if (inputStr.includes("Here's your updated task list:")) {
-    const arrayStartIndex = inputStr.indexOf("Here's your updated task list:");
+  else if (inputStr.includes("updated task list:")) {
+    const arrayStartIndex = inputStr.indexOf("updated task list:");
 
     // Extract the text and array strings
-    let textStr = inputStr.slice(0, arrayStartIndex).trim();
-    let arrayStr = inputStr.slice(arrayStartIndex).trim();
+    let textStr = inputStr.slice(0, arrayStartIndex+18).trim();
+    let arrayStr = inputStr.slice(arrayStartIndex+18).trim();
 
     //Remove CLEARHISTORYNOW from arrayStr
     if (arrayStr.includes("CLEARHISTORYNOW")) {
-      arrayStr = arrayStr.slice(0,-32).slice(32);
+      arrayStr = arrayStr.slice(0,-16);
+    }
+    if (arrayStr.charAt(arrayStr.length - 2)!== "]"){
+      const arrayEndIndex = inputStr.indexOf("]]");
+      arrayStr=arrayStr.slice(0,arrayEndIndex+3).trim()
     }
     // Convert the array string to an actual array
     const array = JSON.parse(arrayStr);
@@ -78,9 +88,9 @@ export const parseModOutput = (inputStr) => {
   }
   else {
     if (inputStr.includes("CLEARHISTORYNOW")) {
-      return(inputStr.slice(0,-32));
+      return(inputStr.slice(0,-16));
     }
-    else{
+   else{
       return(inputStr)
     }
   }

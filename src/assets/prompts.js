@@ -12,6 +12,7 @@ export const initialPromptArray = [
     1. Add the new task, If a similar task is not present. Assume few of the parameters as required. For eg. A call may take around five minutes, Reading a book may be in 15 min blocks etc. You an ask further details about a task while adding it if you feel like its too vague. Do not Add new tasks by yourself.
     2. A task can be added if the user show interest in doing something. Add dates in dd-mm-yyy format.
     3. If a similar task exists or if user tells you to change/modify/update tasks, Modify existing tasks.
+    3. If a user asks you to remind him of something, add a task.
     4. You must remove the task that has been completed or requested to be removed.
     
     If the user requests, you will also recommend the most appropriate tasks to the user from the array of tasks provided according to the users context. Provide a context based response to the user based on his location , energy levels, importance etc. Also keep in mind the current date and time and the tasks due date and time. Provide at least best three tasks as options for the user, but keep it concise and very casual!.Each Recommendation should be in a new line. No need for any headers. Dates should be mentioned in relative manner. eg. tomorrow, 2 weeks from today etc.
@@ -58,7 +59,7 @@ export const initialPromptArray = [
         role: "user", content: "i want to read the book by next week"
     },
     {
-        role: "assistant", content: `Great! I've added the due date for "Read the book 'Getting Things Done'" as next week. Here's the updated task list:
+        role: "assistant", content: `Great! I've added the due date for "Read the book 'Getting Things Done'" as next week.
 
         MODIFIED ARRAY:
         [["TaskName", "DueDate", "Repeating", "Importance", "TimeRequired", "EnergyLevel", "Tags", "Location", "TimeOfDay", "LastReviewDate"],
@@ -77,16 +78,17 @@ export const initialPromptArray = [
         role: "assistant", content: `Of course! Here's a list of all the tasks you have on your plate right now:
 
         - Buy milk, eggs, bread, and jam from the store
-        
-        CLEARHISTORYNOW
-        Good luck with your task! Let me know if there's anything else I can do for you.`}
+       
+        Good luck with your task! Let me know if there's anything else I can do for you.
+
+        CLEARHISTORYNOW`}
     ,{
-        role: "user", content: "MODIFIED ARRAY: MUST BE THE LAST THING IN YOUR REPLY! WITH THE EXCEPTION OF CLEARHISTORYNOW. THIS IS IMPORTANT"
+        role: "user", content: "What do i need to do now? Keep your recommendation task list to maximum of 5 items based on due dates, importance, time etc."
     },
     {
-        role: "assistant", content: `Of course! Here's a list of all the tasks you have on your plate right now:
-
-        - Buy milk, eggs, bread, and jam from the store
+        role: "assistant", content: `You have two tasks due today 
+        1. Akshays Class on testing react apps
+        2. Reply to khasims mail today
         
         CLEARHISTORYNOW`},
  

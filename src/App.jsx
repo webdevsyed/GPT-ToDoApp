@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Configuration, OpenAIApi } from "openai";
-import { Progress } from "flowbite-react";
+import { Progress,Spinner } from "flowbite-react";
 import TaskList from './components/TaskList';
 import Header from './components/Header';
 import Conversation from './components/Conversation';
@@ -27,8 +27,11 @@ function App() {
   //Retrieving existing task list from local storage
   useEffect(() => {
     if (localStorage.getItem("tasks")) {
+
+       console.log(localStorage.getItem("tasks"))
+       console.log(JSON.parse(localStorage.getItem("tasks")))
       setTasksArray(JSON.parse(localStorage.getItem("tasks")))
-    }
+         }
     else {
       localStorage.setItem("tasks", JSON.stringify(tasksArray))
     }
@@ -58,15 +61,16 @@ function App() {
     setIsLoading(20)
 
     const replyMessage = await getReplyFromAi(updatedPromptArray, openai)
+    console.log(replyMessage.content)
 
     setIsLoading(65)
 
     // if the reply contains MODIFIED ARRAY
     // parse it to get the text reply and the array
-    if ((replyMessage.content).includes("MODIFIED ARRAY") || (replyMessage.content).includes("Here's your updated task list:")) {
+    if ((replyMessage.content).includes("MODIFIED ARRAY") || (replyMessage.content).includes("updated task list:")||(replyMessage.content).includes("[[")) {
 
       const [textStr, array] = parseModOutput(replyMessage.content)
-
+    
       setTasksArray(array)
       localStorage.setItem("tasks", JSON.stringify(array))
 
@@ -115,30 +119,28 @@ function App() {
 
 
   return (
-    <div className='min-h-screen min-w-[465px] dark:bg-[#242424] dark:text-white '>
+    <div className='min-h-screen w-full dark:bg-[#242424] dark:text-white overflow-x-hidden'>
       <Header />
-      <div className="pt-10 max-w-5xl mx-auto flex-col px-3">
+      <div className="pt-10 max-w-5xl mx-auto flex-col px-3 lg:pr-6">
         <Conversation conversation={conversation} />
 
         {isLoading == 0
           ? ""
-          : <Progress
-            progress={parseInt(isLoading)}
-            size="sm"
-          />}
+          : <div className='text-center'><Spinner aria-label="Loading" size="lg"/></div>}
 
         <form
           onSubmit={(event) => handleSubmit(event, prompt)}
-          className=''
+          className='mt-3'
         >
           <input
             type="text"
             value={prompt}
             onChange={(event) => setPrompt(event.target.value)}
-            className={` relative dark:text-black w-full h-14 rounded-md px-3 border-2 `}
+            className={` relative dark:text-black w-full h-14 rounded-md px-3 border-2 pr-9 `}
             placeholder='Start chatting here...'
+            disabled={isLoading==0? false:true}
           />
-          <img src={sendIcon} className='relative left-[93%] md:left-[95.5%] -top-[43px] w-8'></img>
+          <img src={sendIcon} onClick={(event)=>{handleSubmit(event, prompt)}} className=' cursor-pointer relative left-[89%] sm:left-[92%] md:left-[95.5%] -top-[43px] w-8'></img>
           <input
             type="submit"
             hidden
