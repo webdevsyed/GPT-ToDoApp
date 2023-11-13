@@ -7,7 +7,7 @@ To install the app, follow these steps:
 1. Clone the repository to your local machine.
 1. Navigate to the root directory of the app.
 1. Run npm install to install the necessary dependencies.
-1. Run npm start to start the development server.
+1. Run npm run dev to start the development server.
 
 ## Usage
 Once the app is running, you can add, delete, and complete tasks on your to-do list. To use the OpenAI API, you will need to provide an API key.
