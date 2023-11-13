@@ -13,7 +13,7 @@ To install the app, follow these steps:
 Once the app is running, you can add, delete, and complete tasks on your to-do list. To use the OpenAI API, you will need to provide an API key.
 
 1. Sign up for an OpenAI API key and copy it to your clipboard.
-1. Create a file called .env in the root directory of the app.
+1. Create a file called .env.local in the root directory of the app.
 1. Add the following line to the .env file: REACT_APP_OPENAI_API_KEY=YOUR_API_KEY
 1. Save the .env file.
 1. Restart the development server.
